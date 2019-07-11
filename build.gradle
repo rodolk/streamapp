@@ -1,0 +1,56 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
+}
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.1'
+    id 'java'
+    id 'application'
+    id 'idea'
+    id 'eclipse'
+    id 'war'
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // Dependencies go here
+
+    testCompile 'junit:junit:4.12'
+
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-streaming
+    providedCompile group: 'org.apache.spark', name: 'spark-streaming_2.12', version: '2.4.0'
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-streaming
+//    providedCompile group: 'org.apache.spark', name: 'spark-streaming_2.10', version: '0.9.0-incubating'
+// https://mvnrepository.com/artifact/org.apache.spark/spark-core
+compile group: 'org.apache.spark', name: 'spark-core_2.12', version: '2.4.3'
+
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-10
+    compile group: 'org.apache.spark', name: 'spark-streaming-kafka-0-10_2.11', version: '2.0.0'
+
+}
+
+mainClassName = 'com.streamtest.Main'
+
+shadowJar {
+    baseName = 'streamapp-shadow'
+    classifier = null
+    version = null
+    manifest {
+        attributes 'Description': 'Stream application JAR'
+    }
+}
+
+

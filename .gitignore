@@ -1,0 +1,25 @@
+
+# Emacs users ... 
+*~
+
+# Gradle builds into a 'build' directory
+build
+
+# Idea uses the out directory instead of build
+out
+
+# Gradle also uses a .gradle directory for gradle state info
+.gradle
+
+# class files
+bin/**/*.class
+
+# Ideas files
+*.iml
+*.ipr
+*.iws
+
+.DS_STORE
+.idea
+*.log
+
