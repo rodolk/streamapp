@@ -6,6 +6,8 @@ import org.apache.spark.TaskContext;
 import org.apache.spark.api.java.*;
 import org.apache.spark.api.java.function.*;
 import org.apache.spark.streaming.Duration;
+import org.apache.spark.streaming.Seconds;
+import org.apache.spark.streaming.StreamingContext;
 import org.apache.spark.streaming.api.java.*;
 import org.apache.spark.streaming.kafka010.*;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -27,7 +29,7 @@ public class Main {
         System.out.println("Starting up server ....");
 
         SparkConf conf = new SparkConf().setAppName("MyTestAPP").setMaster("spark://master:7077");
-        JavaStreamingContext ssc = new JavaStreamingContext(conf, new Duration(1000));
+        JavaStreamingContext ssc = new JavaStreamingContext(conf, Seconds.apply(2000));
 
         Map<String, Object> kafkaParams = new HashMap<>();
         kafkaParams.put("bootstrap.servers", "localhost:9092");
@@ -37,13 +39,13 @@ public class Main {
         kafkaParams.put("auto.offset.reset", "latest");
         kafkaParams.put("enable.auto.commit", false);
 
-        Collection<String> topics = Arrays.asList("topicA", "topicB");
+        Collection<String> topics = Arrays.asList("demo");
 
         JavaInputDStream<ConsumerRecord<String, String>> messages =
           KafkaUtils.createDirectStream(
             ssc,
             LocationStrategies.PreferConsistent(),
-            ConsumerStrategies.<String, String>Subscribe(topics, kafkaParams)
+            ConsumerStrategies.Subscribe(topics, kafkaParams)
           );
 /*
         stream.mapToPair(
