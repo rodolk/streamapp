@@ -28,7 +28,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Starting up server ....");
 
-        SparkConf conf = new SparkConf().setAppName("MyTestAPP").setMaster("spark://master:7077");
+        SparkConf conf = new SparkConf().setAppName("MyTestAPP").setMaster("spark://rodolk-Spark:7077");
         JavaStreamingContext ssc = new JavaStreamingContext(conf, Seconds.apply(2000));
 
         Map<String, Object> kafkaParams = new HashMap<>();
