@@ -29,17 +29,27 @@ public class Main {
         System.out.println("Starting up server ....");
 
         SparkConf conf = new SparkConf().setAppName("MyTestAPP").setMaster("spark://rodolk-Spark:7077");
-        JavaStreamingContext ssc = new JavaStreamingContext(conf, Seconds.apply(2000));
+        JavaStreamingContext ssc = new JavaStreamingContext(conf, Seconds.apply(1));
 
         Map<String, Object> kafkaParams = new HashMap<>();
-        kafkaParams.put("bootstrap.servers", "localhost:9092");
+//        kafkaParams.put("bootstrap.servers", "localhost:9092");
+        kafkaParams.put("bootstrap.servers", "172.26.113.97:9092");
+                
+        kafkaParams.put("ssl.endpoint.identification.algorithm", "");
+        kafkaParams.put("security.protocol", "SSL");
+        kafkaParams.put("ssl.truststore.location", "/home/rodolk/work/streamapp/certs/kafka.serverTest.truststore.jks");
+        kafkaParams.put("ssl.truststore.password", "intel123");
+        kafkaParams.put("ssl.keystore.location", "/home/rodolk/work/streamapp/certs/kafka.mykeystore.jks");
+        kafkaParams.put("ssl.keystore.password", "intel123");
+        kafkaParams.put("ssl.key.password", "intel123");
+        
         kafkaParams.put("key.deserializer", StringDeserializer.class);
         kafkaParams.put("value.deserializer", StringDeserializer.class);
-        kafkaParams.put("group.id", "0");
+        kafkaParams.put("group.id", "rodolk");
         kafkaParams.put("auto.offset.reset", "latest");
         kafkaParams.put("enable.auto.commit", false);
 
-        Collection<String> topics = Arrays.asList("demo");
+        Collection<String> topics = Arrays.asList("public_test1");
 
         JavaInputDStream<ConsumerRecord<String, String>> messages =
           KafkaUtils.createDirectStream(
@@ -63,15 +73,28 @@ public class Main {
         JavaDStream<String> lines = results.map(
             tuple2 -> tuple2._2()
             );
-         JavaDStream<String> words = lines.flatMap(
+/*         JavaDStream<String> words = lines.flatMap(
              x -> Arrays.asList(x.split("\\s+")).iterator()
              );
       JavaPairDStream<String, Integer> wordCounts = words.mapToPair(
             s -> new Tuple2<>(s, 1)
         ).reduceByKey(
             (i1, i2) -> i1 + i2
-          );
-        
+          );*/
+      lines.print();
+      
+ //     lines.foreachRDD(
+   // 		    javaRdd -> {
+    //		        System.out.println("ACA-2");
+/*    		      Map<String, Integer> wordCountMap = javaRdd.collectAsMap();
+    		      for (String key : wordCountMap.keySet()) {
+    		    	  System.out.println(key +":" + wordCountMap.get(key));
+    		      }*/
+//    		    }
+ //   		  );
+
+     // System.out.println("ACA-1");
+
       ssc.start();
       try {
         ssc.awaitTermination();
