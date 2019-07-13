@@ -33,15 +33,15 @@ public class Main {
 
         Map<String, Object> kafkaParams = new HashMap<>();
 //        kafkaParams.put("bootstrap.servers", "localhost:9092");
-        kafkaParams.put("bootstrap.servers", "172.26.113.97:9092");
+        kafkaParams.put("bootstrap.servers", "localhost:9092");
                 
         kafkaParams.put("ssl.endpoint.identification.algorithm", "");
         kafkaParams.put("security.protocol", "SSL");
         kafkaParams.put("ssl.truststore.location", "/home/rodolk/work/streamapp/certs/kafka.serverTest.truststore.jks");
-        kafkaParams.put("ssl.truststore.password", "intel123");
+        kafkaParams.put("ssl.truststore.password", "ssss");
         kafkaParams.put("ssl.keystore.location", "/home/rodolk/work/streamapp/certs/kafka.mykeystore.jks");
-        kafkaParams.put("ssl.keystore.password", "intel123");
-        kafkaParams.put("ssl.key.password", "intel123");
+        kafkaParams.put("ssl.keystore.password", "ssss");
+        kafkaParams.put("ssl.key.password", "ssss");
         
         kafkaParams.put("key.deserializer", StringDeserializer.class);
         kafkaParams.put("value.deserializer", StringDeserializer.class);
